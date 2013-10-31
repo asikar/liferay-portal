@@ -43,7 +43,6 @@ import com.liferay.portlet.asset.service.base.AssetCategoryLocalServiceBaseImpl;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -518,78 +517,8 @@ public class AssetCategoryLocalServiceImpl
 
 		// Properties
 
-		List<AssetCategoryProperty> oldCategoryProperties =
-			assetCategoryPropertyPersistence.findByCategoryId(categoryId);
-
-		oldCategoryProperties = ListUtil.copy(oldCategoryProperties);
-
-		for (int i = 0; i < categoryProperties.length; i++) {
-			String[] categoryProperty = StringUtil.split(
-				categoryProperties[i],
-				AssetCategoryConstants.PROPERTY_KEY_VALUE_SEPARATOR);
-
-			if (categoryProperty.length <= 1) {
-				categoryProperty = StringUtil.split(
-					categoryProperties[i], CharPool.COLON);
-			}
-
-			String key = StringPool.BLANK;
-
-			if (categoryProperty.length > 0) {
-				key = GetterUtil.getString(categoryProperty[0]);
-			}
-
-			String value = StringPool.BLANK;
-
-			if (categoryProperty.length > 1) {
-				value = GetterUtil.getString(categoryProperty[1]);
-			}
-
-			if (Validator.isNotNull(key)) {
-				boolean addCategoryProperty = true;
-				boolean updateCategoryProperty = false;
-
-				AssetCategoryProperty oldCategoryProperty = null;
-
-				Iterator<AssetCategoryProperty> iterator =
-					oldCategoryProperties.iterator();
-
-				while (iterator.hasNext()) {
-					oldCategoryProperty = iterator.next();
-
-					if ((userId == oldCategoryProperty.getUserId()) &&
-						(categoryId == oldCategoryProperty.getCategoryId()) &&
-						key.equals(oldCategoryProperty.getKey())) {
-
-						addCategoryProperty = false;
-
-						if (!value.equals(oldCategoryProperty.getValue())) {
-							updateCategoryProperty = true;
-
-							oldCategoryProperty.setValue(value);
-						}
-
-						iterator.remove();
-
-						break;
-					}
-				}
-
-				if (addCategoryProperty) {
-					assetCategoryPropertyLocalService.addCategoryProperty(
-						userId, categoryId, key, value);
-				}
-				else if (updateCategoryProperty) {
-					assetCategoryPropertyLocalService.
-						updateAssetCategoryProperty(oldCategoryProperty);
-				}
-			}
-		}
-
-		for (AssetCategoryProperty categoryProperty : oldCategoryProperties) {
-			assetCategoryPropertyLocalService.deleteAssetCategoryProperty(
-				categoryProperty);
-		}
+		assetCategoryPropertyLocalService.updateCategoryProperty(
+			categoryId, userId, categoryProperties);
 
 		// Indexer
 
