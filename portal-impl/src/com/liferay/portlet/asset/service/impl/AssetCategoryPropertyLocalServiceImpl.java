@@ -16,14 +16,22 @@ package com.liferay.portlet.asset.service.impl;
 
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
+import com.liferay.portal.kernel.util.CharPool;
+import com.liferay.portal.kernel.util.GetterUtil;
+import com.liferay.portal.kernel.util.ListUtil;
+import com.liferay.portal.kernel.util.StringPool;
+import com.liferay.portal.kernel.util.StringUtil;
+import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.model.User;
 import com.liferay.portlet.asset.CategoryPropertyKeyException;
 import com.liferay.portlet.asset.CategoryPropertyValueException;
+import com.liferay.portlet.asset.model.AssetCategoryConstants;
 import com.liferay.portlet.asset.model.AssetCategoryProperty;
 import com.liferay.portlet.asset.service.base.AssetCategoryPropertyLocalServiceBaseImpl;
 import com.liferay.portlet.asset.util.AssetUtil;
 
 import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -126,6 +134,85 @@ public class AssetCategoryPropertyLocalServiceImpl
 		throws SystemException {
 
 		return assetCategoryPropertyFinder.findByG_K(groupId, key);
+	}
+
+	@Override
+	public void updateCategoryProperty(
+			long userId, long categoryId, String[] categoryProperties)
+		throws PortalException, SystemException {
+
+		List<AssetCategoryProperty> oldCategoryProperties =
+				assetCategoryPropertyPersistence.findByCategoryId(categoryId);
+
+		oldCategoryProperties = ListUtil.copy(oldCategoryProperties);
+
+		for (int i = 0; i < categoryProperties.length; i++) {
+			String[] categoryProperty = StringUtil.split(
+				categoryProperties[i],
+				AssetCategoryConstants.PROPERTY_KEY_VALUE_SEPARATOR);
+
+			if (categoryProperty.length <= 1) {
+				categoryProperty = StringUtil.split(
+					categoryProperties[i], CharPool.COLON);
+			}
+
+			String key = StringPool.BLANK;
+
+			if (categoryProperty.length > 0) {
+				key = GetterUtil.getString(categoryProperty[0]);
+			}
+
+			String value = StringPool.BLANK;
+
+			if (categoryProperty.length > 1) {
+				value = GetterUtil.getString(categoryProperty[1]);
+			}
+
+			validate(key, value);
+
+			if (Validator.isNotNull(key)) {
+				boolean addCategoryProperty = true;
+				boolean updateCategoryProperty = false;
+
+				AssetCategoryProperty oldCategoryProperty = null;
+
+				Iterator<AssetCategoryProperty> iterator =
+					oldCategoryProperties.iterator();
+
+				while (iterator.hasNext()) {
+					oldCategoryProperty = iterator.next();
+
+					if ((userId == oldCategoryProperty.getUserId()) &&
+						(categoryId == oldCategoryProperty.getCategoryId()) &&
+						key.equals(oldCategoryProperty.getKey())) {
+
+						addCategoryProperty = false;
+
+						if (!value.equals(oldCategoryProperty.getValue())) {
+							updateCategoryProperty = true;
+
+							oldCategoryProperty.setValue(value);
+							oldCategoryProperty.setModifiedDate(new Date());
+						}
+
+						iterator.remove();
+
+						break;
+					}
+				}
+
+				if (addCategoryProperty) {
+					addCategoryProperty(userId, categoryId, key, value);
+				}
+				else if (updateCategoryProperty) {
+					updateAssetCategoryProperty(oldCategoryProperty);
+				}
+			}
+		}
+
+		for (AssetCategoryProperty categoryProperty : oldCategoryProperties) {
+			deleteAssetCategoryProperty(categoryProperty);
+		}
 	}
 
 	@Override
