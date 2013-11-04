@@ -22,6 +22,7 @@ import com.liferay.portal.LocaleException;
 import com.liferay.portal.NoSuchShardException;
 import com.liferay.portal.NoSuchVirtualHostException;
 import com.liferay.portal.RequiredCompanyException;
+import com.liferay.portal.UserEmailAddressException;
 import com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery;
 import com.liferay.portal.kernel.dao.orm.DynamicQuery;
 import com.liferay.portal.kernel.dao.orm.Property;
@@ -417,11 +418,17 @@ public class CompanyLocalServiceImpl extends CompanyLocalServiceBaseImpl {
 			String emailAddress =
 				PropsValues.DEFAULT_ADMIN_EMAIL_ADDRESS_PREFIX + "@" + mx;
 
-			userLocalService.addDefaultAdminUser(
-				companyId, PropsValues.DEFAULT_ADMIN_SCREEN_NAME, emailAddress,
-				defaultUser.getLocale(), PropsValues.DEFAULT_ADMIN_FIRST_NAME,
-				PropsValues.DEFAULT_ADMIN_MIDDLE_NAME,
-				PropsValues.DEFAULT_ADMIN_LAST_NAME);
+			try {
+				userLocalService.addDefaultAdminUser(
+					companyId, PropsValues.DEFAULT_ADMIN_SCREEN_NAME,
+					emailAddress, defaultUser.getLocale(),
+					PropsValues.DEFAULT_ADMIN_FIRST_NAME,
+					PropsValues.DEFAULT_ADMIN_MIDDLE_NAME,
+					PropsValues.DEFAULT_ADMIN_LAST_NAME);
+			}
+			catch (UserEmailAddressException ueae) {
+				throw new CompanyMxException();
+			}
 		}
 
 		// Portlets
