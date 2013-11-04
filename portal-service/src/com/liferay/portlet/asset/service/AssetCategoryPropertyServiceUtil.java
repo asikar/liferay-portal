@@ -84,6 +84,14 @@ public class AssetCategoryPropertyServiceUtil {
 		return getService().getCategoryPropertyValues(companyId, key);
 	}
 
+	public static void updateCategoryProperty(long categoryId, long userId,
+		java.lang.String[] categoryProperties)
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException {
+		getService()
+			.updateCategoryProperty(categoryId, userId, categoryProperties);
+	}
+
 	public static com.liferay.portlet.asset.model.AssetCategoryProperty updateCategoryProperty(
 		long categoryPropertyId, java.lang.String key, java.lang.String value)
 		throws com.liferay.portal.kernel.exception.PortalException,

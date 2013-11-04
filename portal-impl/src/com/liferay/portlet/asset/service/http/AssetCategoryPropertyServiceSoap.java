@@ -124,6 +124,19 @@ public class AssetCategoryPropertyServiceSoap {
 		}
 	}
 
+	public static void updateCategoryProperty(long categoryId, long userId,
+		java.lang.String[] categoryProperties) throws RemoteException {
+		try {
+			AssetCategoryPropertyServiceUtil.updateCategoryProperty(categoryId,
+				userId, categoryProperties);
+		}
+		catch (Exception e) {
+			_log.error(e, e);
+
+			throw new RemoteException(e.getMessage());
+		}
+	}
+
 	public static com.liferay.portlet.asset.model.AssetCategoryPropertySoap updateCategoryProperty(
 		long categoryPropertyId, java.lang.String key, java.lang.String value)
 		throws RemoteException {
