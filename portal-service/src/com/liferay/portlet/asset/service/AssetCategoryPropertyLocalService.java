@@ -289,6 +289,11 @@ public interface AssetCategoryPropertyLocalService extends BaseLocalService,
 		long groupId, java.lang.String key)
 		throws com.liferay.portal.kernel.exception.SystemException;
 
+	public void updateCategoryProperty(long userId, long categoryId,
+		java.lang.String[] categoryProperties)
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException;
+
 	public com.liferay.portlet.asset.model.AssetCategoryProperty updateCategoryProperty(
 		long categoryPropertyId, java.lang.String key, java.lang.String value)
 		throws com.liferay.portal.kernel.exception.PortalException,
