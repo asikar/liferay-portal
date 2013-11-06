@@ -130,22 +130,18 @@ public class AssetCategoryPropertyLocalServiceImpl
 
 	@Override
 	public AssetCategoryProperty updateCategoryProperty(
-			long categoryPropertyId, String key, String value)
+			AssetCategoryProperty assetCategoryProperty, String key,
+			String value)
 		throws PortalException, SystemException {
 
 		validate(key, value);
 
-		AssetCategoryProperty categoryProperty =
-			assetCategoryPropertyPersistence.findByPrimaryKey(
-				categoryPropertyId);
+		assetCategoryProperty.setModifiedDate(new Date());
+		assetCategoryProperty.setValue(value);
 
-		categoryProperty.setModifiedDate(new Date());
-		categoryProperty.setKey(key);
-		categoryProperty.setValue(value);
+		assetCategoryPropertyPersistence.update(assetCategoryProperty);
 
-		assetCategoryPropertyPersistence.update(categoryProperty);
-
-		return categoryProperty;
+		return assetCategoryProperty;
 	}
 
 	protected void validate(String key, String value) throws PortalException {
