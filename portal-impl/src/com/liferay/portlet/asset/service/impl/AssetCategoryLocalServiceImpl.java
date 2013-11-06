@@ -565,8 +565,6 @@ public class AssetCategoryLocalServiceImpl
 
 						if (!value.equals(oldCategoryProperty.getValue())) {
 							updateCategoryProperty = true;
-
-							oldCategoryProperty.setValue(value);
 						}
 
 						iterator.remove();
@@ -581,7 +579,7 @@ public class AssetCategoryLocalServiceImpl
 				}
 				else if (updateCategoryProperty) {
 					assetCategoryPropertyLocalService.
-						updateAssetCategoryProperty(oldCategoryProperty);
+						updateCategoryProperty(oldCategoryProperty, key, value);
 				}
 			}
 		}

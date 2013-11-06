@@ -76,19 +76,16 @@ public class AssetCategoryPropertyServiceImpl
 
 	@Override
 	public AssetCategoryProperty updateCategoryProperty(
-			long categoryPropertyId, String key, String value)
+			AssetCategoryProperty assetCategoryProperty, String key,
+			String value)
 		throws PortalException, SystemException {
-
-		AssetCategoryProperty assetCategoryProperty =
-			assetCategoryPropertyLocalService.getAssetCategoryProperty(
-				categoryPropertyId);
 
 		AssetCategoryPermission.check(
 			getPermissionChecker(), assetCategoryProperty.getCategoryId(),
 			ActionKeys.UPDATE);
 
 		return assetCategoryPropertyLocalService.updateCategoryProperty(
-			categoryPropertyId, key, value);
+			assetCategoryProperty, key, value);
 	}
 
 }

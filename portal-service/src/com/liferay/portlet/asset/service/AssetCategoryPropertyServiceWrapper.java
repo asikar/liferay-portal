@@ -87,10 +87,11 @@ public class AssetCategoryPropertyServiceWrapper
 
 	@Override
 	public com.liferay.portlet.asset.model.AssetCategoryProperty updateCategoryProperty(
-		long categoryPropertyId, java.lang.String key, java.lang.String value)
+		com.liferay.portlet.asset.model.AssetCategoryProperty assetCategoryProperty,
+		java.lang.String key, java.lang.String value)
 		throws com.liferay.portal.kernel.exception.PortalException,
 			com.liferay.portal.kernel.exception.SystemException {
-		return _assetCategoryPropertyService.updateCategoryProperty(categoryPropertyId,
+		return _assetCategoryPropertyService.updateCategoryProperty(assetCategoryProperty,
 			key, value);
 	}
 

@@ -125,11 +125,11 @@ public class AssetCategoryPropertyServiceSoap {
 	}
 
 	public static com.liferay.portlet.asset.model.AssetCategoryPropertySoap updateCategoryProperty(
-		long categoryPropertyId, java.lang.String key, java.lang.String value)
-		throws RemoteException {
+		com.liferay.portlet.asset.model.AssetCategoryPropertySoap assetCategoryProperty,
+		java.lang.String key, java.lang.String value) throws RemoteException {
 		try {
-			com.liferay.portlet.asset.model.AssetCategoryProperty returnValue = AssetCategoryPropertyServiceUtil.updateCategoryProperty(categoryPropertyId,
-					key, value);
+			com.liferay.portlet.asset.model.AssetCategoryProperty returnValue = AssetCategoryPropertyServiceUtil.updateCategoryProperty(com.liferay.portlet.asset.model.impl.AssetCategoryPropertyModelImpl.toModel(
+						assetCategoryProperty), key, value);
 
 			return com.liferay.portlet.asset.model.AssetCategoryPropertySoap.toSoapModel(returnValue);
 		}

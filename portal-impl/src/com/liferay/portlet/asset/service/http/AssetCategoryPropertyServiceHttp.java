@@ -190,7 +190,8 @@ public class AssetCategoryPropertyServiceHttp {
 	}
 
 	public static com.liferay.portlet.asset.model.AssetCategoryProperty updateCategoryProperty(
-		HttpPrincipal httpPrincipal, long categoryPropertyId,
+		HttpPrincipal httpPrincipal,
+		com.liferay.portlet.asset.model.AssetCategoryProperty assetCategoryProperty,
 		java.lang.String key, java.lang.String value)
 		throws com.liferay.portal.kernel.exception.PortalException,
 			com.liferay.portal.kernel.exception.SystemException {
@@ -200,7 +201,7 @@ public class AssetCategoryPropertyServiceHttp {
 					_updateCategoryPropertyParameterTypes4);
 
 			MethodHandler methodHandler = new MethodHandler(methodKey,
-					categoryPropertyId, key, value);
+					assetCategoryProperty, key, value);
 
 			Object returnObj = null;
 
@@ -242,6 +243,7 @@ public class AssetCategoryPropertyServiceHttp {
 			long.class, java.lang.String.class
 		};
 	private static final Class<?>[] _updateCategoryPropertyParameterTypes4 = new Class[] {
-			long.class, java.lang.String.class, java.lang.String.class
+			com.liferay.portlet.asset.model.AssetCategoryProperty.class,
+			java.lang.String.class, java.lang.String.class
 		};
 }
