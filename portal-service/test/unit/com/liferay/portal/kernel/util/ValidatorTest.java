@@ -384,7 +384,7 @@ public class ValidatorTest extends PowerMockito {
 			"test-@liferay.com", "test/@liferay.com", "test=@liferay.com",
 			"test?@liferay.com", "test^@liferay.com", "test_@liferay.com",
 			"test`@liferay.com", "test{@liferay.com", "test|@liferay.com",
-			"test{@liferay.com", "test~@liferay.com"
+			"test{@liferay.com", "test~@liferay.com", "test@liferay"
 		};
 
 		testValidEmailAddreses(validEmailAddresses, true);
